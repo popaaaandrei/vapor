@@ -41,7 +41,7 @@ final class TextStream : Core.Stream {
 }
 
 extension WebSocket {
-    /// Sends a string to the server
+    /// Sends a `String` to the server
     public func send(_ string: String) {
         self.textStream.inputStream(string)
     }

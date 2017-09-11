@@ -1,3 +1,4 @@
+import Foundation
 import Core
 
 final class BinaryStream : Core.Stream {
@@ -42,15 +43,31 @@ final class BinaryStream : Core.Stream {
 
 
 extension WebSocket {
-    /// Sends a string to the server
+    /// Sends a `ByteBuffer` to the server
     public func send(_ buffer: ByteBuffer) {
         self.binaryStream.inputStream(buffer)
     }
     
-    /// Drains the TextStream into this closure.
+    /// Sends `Data` to the server
+    public func send(_ data: Data) {
+        data.withUnsafeBytes { buffer in
+            self.binaryStream.inputStream(ByteBuffer(start: buffer, count: data.count))
+        }
+    }
+    
+    /// Drains the BinaryStream into this closure.
     ///
     /// Any previously listening closures will be overridden
     public func onBinary(_ closure: @escaping ((ByteBuffer) -> ())) {
         self.binaryStream.drain(closure)
+    }
+    
+    /// Drains the BinaryStream into this closure.
+    ///
+    /// Any previously listening closures will be overridden
+    public func onData(_ closure: @escaping ((Data) -> ())) {
+        self.binaryStream.drain { buffer in
+            closure(Data(buffer))
+        }
     }
 }
