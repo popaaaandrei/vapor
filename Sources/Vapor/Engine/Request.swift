@@ -121,8 +121,8 @@ public final class Request: EphemeralContainer, ParameterContainer {
 extension Request {
     /// The request's event loop container.
     /// note: convenience name for `.superContainer`
-    public var eventLoop: Container {
-        return superContainer
+    public var eventLoop: ConvenienceContainer<Request> {
+        return ConvenienceContainer(container: superContainer)
     }
 
     /// Container for parsing/serializing URI query strings
@@ -139,9 +139,52 @@ extension Request {
     }
 }
 
+/// Wraps a container with in a wrapper with
+/// a convenience make function.
+public struct ConvenienceContainer<Parent>: Container {
+    /// See Container.config
+    public var config: Config {
+        return container.config
+    }
+
+    /// See Container.environment
+    public var environment: Environment {
+        return container.environment
+    }
+
+
+    /// See Container.services
+    public var services: Services {
+        return container.services
+    }
+
+    /// See Container.queue
+    public var queue: DispatchQueue {
+        return container.queue
+    }
+
+    /// See Container.serviceCache
+    public var serviceCache: ServiceCache {
+        return container.serviceCache
+    }
+
+    /// The wrapped container.
+    private let container: Container
+
+    /// Create a new event loop container.
+    init(container: Container) {
+        self.container = container
+    }
+
+    /// Make an instance of the provided interface for this Request.
+    public func make<T>(_ interface: T.Type = T.self) throws -> T {
+        return try container.make(T.self, for: Parent.self)
+    }
+}
+
 extension Request {
     /// Make an instance of the provided interface for this Request.
-    public func make<T>(_ interface: T.Type) throws -> T {
+    public func make<T>(_ interface: T.Type = T.self) throws -> T {
         return try make(T.self, for: Request.self)
     }
 }

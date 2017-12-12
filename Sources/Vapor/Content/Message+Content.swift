@@ -72,6 +72,14 @@ extension ContentContainer {
     }
 
     /// Convenience for accessing a single value from the content
+    public func get<D>(_ type: D.Type = D.self, at keyPath: BasicKeyRepresentable...) throws -> D
+        where D: Decodable
+    {
+        let decoder = try requireDecoder()
+        return try decoder.get(at: keyPath.makeBasicKeys(), from: body)
+    }
+
+    /// Convenience for accessing a single value from the content
     public func get<D>(_ type: D.Type = D.self, at keyPath: [BasicKeyRepresentable]) throws -> D
         where D: Decodable
     {

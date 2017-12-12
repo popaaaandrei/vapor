@@ -26,12 +26,12 @@ public final class FluentProvider: Provider {
             return Databases(storage: databases)
         }
 
-        services.register { worker -> ConnectionPoolCache in
+        services.register(factory: { worker -> ConnectionPoolCache in
             return try ConnectionPoolCache(
                 databases: worker.make(for: ConnectionPoolCache.self),
                 on: worker
             )
-        }
+        })
         services.register { worker -> ActiveConnectionCache in
             return ActiveConnectionCache()
         }

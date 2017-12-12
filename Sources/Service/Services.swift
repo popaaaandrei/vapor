@@ -13,6 +13,26 @@ public struct Services {
 
 // MARK: Services
 
+extension Services: CustomStringConvertible {
+    public var description: String {
+        var desc = ""
+        desc += "Providers: \n"
+        desc += providers
+            .map { "- \(type(of: $0))"}
+            .sorted()
+            .joined(separator: "\n")
+
+        desc += "\n"
+        desc += "Services: \n"
+        desc += factories
+            .map { $0.serviceSupports.isEmpty ? "- \($0.serviceType)" : "- \($0.serviceType) (Supports: \($0.serviceSupports.map { "\($0)" }.joined(separator: ", ")))" }
+            .sorted()
+            .joined(separator: "\n")
+
+        return desc
+    }
+}
+
 extension Services {
     /// Adds a service type to the Services.
     public mutating func register<S: ServiceType>(_ type: S.Type = S.self) {

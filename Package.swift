@@ -108,6 +108,10 @@ let package = Package(
         .target(name: "Boilerplate", dependencies: ["Fluent", "Service", "Routing", "Vapor"]),
         .target(name: "BoilerplateRun", dependencies: ["Boilerplate"]),
 
+
+        .target(name: "Pokedex", dependencies: ["FluentSQLite", "Vapor"]),
+        .target(name: "PokedexRun", dependencies: ["Pokedex"]),
+
         // Core
         .target(name: "JunkDrawer", dependencies: ["Async", "Bits", "COperatingSystem", "Debugging"]),
         .testTarget(name: "JunkDrawerTests", dependencies: ["JunkDrawer"]),

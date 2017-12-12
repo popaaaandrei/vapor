@@ -146,6 +146,14 @@ extension Services {
             return PrintLogger()
         }
 
+        /// cache
+        services.register(Cache.self, isSingleton: true) { container -> InMemoryCache in
+            return InMemoryCache()
+        }
+        services.register(Cache.self, isSingleton: true) { container -> SharedInMemoryCache in
+            return SharedInMemoryCache()
+        }
+
         return services
     }
 }
