@@ -4,12 +4,12 @@ extension Console {
     /// Runs a command or group of commands on this console using
     /// the supplied arguments.
     public func run(_ runnable: Runnable, arguments: [String]) throws {
-        var input = try ParsedInput.parse(from: arguments)
+        var input = try Input.par
         try run(runnable, with: &input)
     }
 
     /// Runs a command with the parsed console input.
-    private func run(_ runnable: Runnable, with input: inout ParsedInput) throws {
+    private func run(_ runnable: Runnable, with input: inout Input) throws {
         // try to run subcommand first
         if let group = runnable as? Group {
             if let name = input.arguments.popFirst() {
