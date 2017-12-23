@@ -22,7 +22,7 @@ let package = Package(
     ],
     dependencies: [
         // Core vapor transport layer
-        .Package(url: "https://github.com/vapor/engine.git", majorVersion: 2),
+        .Package(url: "https://github.com/popaaaandrei/engine.git", , Version(2, 2, 3)),
 
         // Console protocol and implementation for powering command line interface.
         .Package(url: "https://github.com/vapor/console.git", majorVersion: 2),
